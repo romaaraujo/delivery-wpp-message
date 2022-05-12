@@ -1,0 +1,8 @@
+# Start PostgreSQL Server on Docker Container
+docker run -d -p 127.0.0.1:5432:5432/tcp --name some-postgres -e POSTGRES_PASSWORD=postgres -e PGDATA=/var/lib/postgresql/data/pgdata -v /custom/mount:/var/lib/postgresql/data postgres
+
+# Start pgsql on terminal
+docker exec -tiu postgres some-postgres psql
+
+# Generates a model and its migration
+npx sequelize model:create --name Patient --attributes id:string # Recommend to follow files inside models and migrations as template
