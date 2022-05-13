@@ -1,8 +1,8 @@
 const express = require('express');
-const HealthzController = require('../controllers/HealthzController.js');
+const healthzController = require('../controllers/healthzController.js');
 
 const routes = express.Router();
 
-routes.get('/', HealthzController.index);
+routes.get('/', healthzController.index);
 
 module.exports = routes;

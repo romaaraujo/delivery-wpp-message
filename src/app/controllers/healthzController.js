@@ -7,15 +7,16 @@
 
 require('dotenv/config');
 const database = require('./../database/conn.js');
+const queue = require('./../services/queue.js');
 
-async function checkDatabase() {
-    return database.$queryRaw`SELECT 1=1`.then(() => { return true }).catch((e) => { return false });
+async function checkQueueService() {
+    return queue.testConnection();
 }
 
 async function index(req, res) {
     const check = {};
     check.express = true;
-    check[process.env.DB_DIALECT] = await checkDatabase();
+    check.rabbitmq = await checkQueueService();
 
     res.json(check);
 }
