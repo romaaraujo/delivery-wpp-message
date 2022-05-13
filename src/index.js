@@ -1,12 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const whatsappRoutes = require('./app/routes/whatsapp.js');
 const healthzRoutes = require('./app/routes/healthz.js');
-const testRoutes = require('./app/routes/test.js');
 const ratelimit = require('./app/security/ratelimit.js');
 const { logger, httpLogger } = require('./app/security/logger.js');
-require('dotenv/config');
 const helmet = require('helmet');
 const timeout = require('./app/security/timeout.js');
+const validation = require('./app/middlewares/validation.js');
 
 const server = express();
 
@@ -27,8 +27,14 @@ server.use(bodyParser.urlencoded({ extended: false }));
 /* 
 * Routes
 */
+server.use('/whatsapp', whatsappRoutes);
 server.use('/healthz', healthzRoutes);
-server.use('/test', testRoutes);
+
+
+/* 
+* Validation Mid
+*/
+server.use(validation);
 
 try {
     const port = process.env.PORT || 8080;
