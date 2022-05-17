@@ -23,7 +23,7 @@ async function send(req, res) {
     try {
         const { number, message } = req.body;
 
-        channelWrapper.sendToQueue(process.env.AMQP_DEFAULT_QUEUE, { "number": number, "message": message });
+        channelWrapper.sendToQueue(process.env.AMQP_QUEUE, { "number": number, "message": message });
         return res.send('teste');
 
     } catch (error) {

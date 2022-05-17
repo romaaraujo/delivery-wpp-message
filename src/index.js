@@ -2,11 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const whatsappRoutes = require('./app/routes/whatsapp.js');
 const healthzRoutes = require('./app/routes/healthz.js');
+const authRoutes = require('./app/routes/auth.js');
 const ratelimit = require('./app/security/ratelimit.js');
 const { logger, httpLogger } = require('./app/security/logger.js');
 const helmet = require('helmet');
 const timeout = require('./app/security/timeout.js');
 const validation = require('./app/middlewares/validation.js');
+const token = require('./app/middlewares/token.js');
 
 const server = express();
 
@@ -19,7 +21,6 @@ server.use(ratelimit);
 server.use(helmet.contentSecurityPolicy());
 server.use(helmet.hsts());
 server.use(helmet.xssFilter());
-
 // #  #   #  #   #  #   #  #   #  #   #  #   #  #   #  #  
 
 server.use(bodyParser.urlencoded({ extended: false }));
@@ -27,9 +28,12 @@ server.use(bodyParser.urlencoded({ extended: false }));
 /* 
 * Routes
 */
-server.use('/whatsapp', whatsappRoutes);
 server.use('/healthz', healthzRoutes);
+server.use('/auth', authRoutes);
 
+// Auth
+server.use(token);
+server.use('/whatsapp', whatsappRoutes);
 
 /* 
 * Validation Mid
