@@ -12,26 +12,6 @@ const client = async () =>
             throw new Error(err);
         });
 
-
-
-
-
-
-// const start = (client) => {
-//     for(let x = 0; x < 100; x++) {
-//         client.sendText('5581988633522@c.us', 'oq?').catch((error) => {console.log(error)})
-//     }
-// }
-
-
-// const start = (client) => {
-//     client.onMessage((message) => {
-//         if (message.body === 'Hi') {
-//             client.sendText(message.from, 'Welcome Venom 🕷');
-//         }
-//     })
-// }
-
 function testConnection() {
     return true;
 }
