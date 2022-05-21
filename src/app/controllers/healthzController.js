@@ -5,20 +5,23 @@
  * 
  *  */
 
-require('dotenv/config');
-const database = require('./../database/conn.js');
-const queue = require('./../services/queue.js');
-
-async function checkQueueService() {
-    return queue.testConnection();
-}
+const whatsappService = require('../services/whatsapp.js');
+const queueService = require('./../services/queue.js');
 
 async function index(req, res) {
-    const check = {};
-    check.express = true;
-    check.rabbitmq = await checkQueueService();
 
-    res.json(check);
+    const healthz = {};
+
+    healthz.express = {
+        uptime: process.uptime()
+    }
+
+    healthz.services = {
+        rabbitmq: queueService.testConnection(),
+        whatsapp: whatsappService.testConnection()
+    }
+
+    res.json(healthz);
 }
 
 module.exports = {
