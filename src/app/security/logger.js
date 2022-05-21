@@ -12,24 +12,25 @@ const date = new Date().toISOString().slice(0, 10);
 // debug: 5,
 // silly: 6
 
-const httpLogger = (req, res, next) => {
-  const oldSend = res.send
-  res.send = function (data) {
-    oldSend.apply(res, arguments)
-    logger.http(`Params: ${JSON.stringify(req.params)}, Body: ${JSON.stringify(req.body)}, Host: ${req.headers.host}, Route: ${req.originalUrl}, IP: ${req.ip}, Method: ${req.method}`, { ...req.body, status: res.statusCode, data: data })
-  }
-  next();
-}
+const tsFormat = () => (new Date()).toLocaleDateString() + ' - ' + (new Date()).toLocaleTimeString();
 
 const logger = winston.createLogger({
-  level: 'http',
+  level: 'info',
   format: winston.format.combine(
-    winston.format.simple(),
-    winston.format.timestamp()
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    winston.format.simple()
   ),
   transports: [
-    new winston.transports.File({ filename: `${path.resolve()}/src/storage/log/${date}.log`, level: 'http' }),
+    new winston.transports.File({
+      timestamp: tsFormat,
+      colorize: true, filename: `${path.resolve()}/src/storage/log/${date}.log`, level: 'info'
+    }),
+    new winston.transports.Console({
+      timestamp: tsFormat,
+      colorize: true,
+      level: process.env.ENV === 'DEV' ? 'verbose' : 'info',
+    })
   ]
 });
 
-module.exports = { logger, httpLogger };
+module.exports = { logger };
