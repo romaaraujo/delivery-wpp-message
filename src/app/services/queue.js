@@ -1,8 +1,7 @@
 const amqp = require('amqp-connection-manager');
 const { logger } = require('../security/logger');
 
-
-const connection = amqp.connect([`amqp://${process.env.AMQP_HOST}`]);
+const connection = amqp.connect(process.env.AMQP_URL);
 const channelWrapper = connection.createChannel({
     json: true,
     setup: function (channel) {

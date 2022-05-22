@@ -32,6 +32,10 @@ $ npm run dev
 # Header: Authorization {JWT Token}
 # Body: number [number, length: 13], message [string]
 # Response: 404 - Bad Request, 201 - Send to queue
+
+# POST /auth/login
+# Body: user, key [string]
+# Response: 500 - Server Error, 200 - Return the access_token
 ```
 
 [![Linkedin Badge](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&link=https://www.linkedin.com/in/romaaraujo/)](https://www.linkedin.com/in/romaaraujo/)

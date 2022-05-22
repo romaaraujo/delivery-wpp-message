@@ -3,9 +3,9 @@ const { logger } = require('../src/app/security/logger');
 const whatsappService = require('../src/app/services/whatsapp');
 
 const bootstrap = async () => {
-    const connection = amqp.connect([`amqp://${process.env.AMQP_HOST}`]);
+    const connection = amqp.connect(process.env.AMQP_URL);
     const whatsappClient = await whatsappService.client();
-
+    
     const queue = process.env.AMQP_QUEUE;
     const maxAttemps = process.env.AMQP_MESSAGE_MAX_ATTEMPS;
     const errorDelayTime = process.env.AMQP_DELAY_TIME * 1000;
@@ -22,7 +22,10 @@ const bootstrap = async () => {
 
             await whatsappClient
                 .sendText(`${message.number}@c.us`, message.message)
-                .catch((err) => { throw new Error(JSON.stringify(err)) });
+                .catch((err) => { 
+                    attemps = 0;
+                    throw new Error(JSON.stringify(err)) 
+                });
 
             channelWrapper.ack(data);
             logger.info(`Message send: ${content}`)
