@@ -5,7 +5,6 @@
  * 
  *  */
 
-const whatsappService = require('../services/whatsapp.js');
 const queueService = require('./../services/queue.js');
 
 async function index(req, res) {
@@ -18,10 +17,9 @@ async function index(req, res) {
 
     healthz.services = {
         rabbitmq: queueService.testConnection(),
-        whatsapp: whatsappService.testConnection()
     }
 
-    res.json(healthz);
+    return res.json(healthz);
 }
 
 module.exports = {

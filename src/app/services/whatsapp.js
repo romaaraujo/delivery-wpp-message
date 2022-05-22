@@ -12,12 +12,7 @@ const client = async () =>
             throw new Error(err);
         });
 
-function testConnection() {
-    return true;
-}
-
 module.exports = {
-    testConnection,
     client
 }
 
